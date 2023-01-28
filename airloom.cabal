@@ -28,6 +28,7 @@ source-repository head
 library
   exposed-modules:
       Lib
+      Parser
   other-modules:
       Paths_airloom
   hs-source-dirs:
