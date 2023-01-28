@@ -15,9 +15,11 @@ data SourceLine = SourceTextLine String
 data DocLine = DocTextLine String
              | DocTagLine DocTag
 
+-- Matches `loom:start` tags.
 loomStartRegex :: String
 loomStartRegex = "[^\\\\]loom:start\\(([a-zA-Z0-9,':]+)\\)"
 
+-- Matches `loom:end` tags.
 loomEndRegex :: String
 loomEndRegex = "[^\\\\]loom:start\\(([a-zA-Z0-9,':]+)\\)"
 
