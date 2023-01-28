@@ -4,18 +4,9 @@ module AirLoom.Parser (
   SourceLine (..),
   DocLine (..),
   parseSourceLine,
-  parseLoomStart
+  parseDocLine
 ) where 
 import Text.Regex.TDFA
-
--- The types of tags we can encounter in source files.
-data SourceTag = FragmentStartTag String
-               | FragmentEndTag String
-  deriving (Eq, Show)
-
--- The types of tags we can encounter in documentation files.
-data DocTag = TranscludeTag String
-  deriving (Eq, Show)
 
 -- The type of lines in source files: either a source line or a tag like
 -- `loom:start` or `loom:end`.
@@ -29,6 +20,15 @@ data DocLine = DocTextLine String
              | DocTagLine DocTag
   deriving (Eq, Show)
 
+-- The types of tags we can encounter in source files.
+data SourceTag = FragmentStartTag String
+               | FragmentEndTag String
+  deriving (Eq, Show)
+
+-- The types of tags we can encounter in documentation files.
+data DocTag = TranscludeTag String
+  deriving (Eq, Show)
+
 -- Given a line of text, returns a `SourceTagLine` if there's a `loom:*` tag,
 -- or a `SourceTextLine` otherwise.
 parseSourceLine :: String -> SourceLine
@@ -38,6 +38,14 @@ parseSourceLine line =
     Nothing -> (case parseLoomEnd line of
                 Just l -> l
                 Nothing -> SourceTextLine line)
+
+-- Given a line of text, returns a `DocTagLine` if there's a `loom:*` tag, or a
+-- `DocTextLine` otherwise.
+parseDocLine :: String -> DocLine
+parseDocLine line =
+  case parseLoomInclude line of
+    Just l -> l
+    Nothing -> DocTextLine line
 
 -- Try parsing a `loom:start` tag.
 parseLoomStart :: String -> Maybe SourceLine
@@ -51,6 +59,13 @@ parseLoomEnd :: String -> Maybe SourceLine
 parseLoomEnd line =
   case line =~ loomEndRegex :: (String, String, String, [String]) of
     (_, _, _, text : []) -> Just $ SourceTagLine $ FragmentEndTag text
+    _                    -> Nothing
+
+-- Try parsing a `loom:include` tag.
+parseLoomInclude :: String -> Maybe DocLine
+parseLoomInclude line =
+  case line =~ loomIncludeRegex :: (String, String, String, [String]) of
+    (_, _, _, text : []) -> Just $ DocTagLine $ TranscludeTag text
     _                    -> Nothing
 
 -- Matches `loom:start` tags.

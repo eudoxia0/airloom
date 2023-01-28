@@ -1,6 +1,6 @@
 module Main (main) where
 import Test.HUnit
-import AirLoom.Parser (parseSourceLine, SourceLine (SourceTextLine, SourceTagLine), SourceTag (FragmentStartTag, FragmentEndTag), parseLoomStart)
+import AirLoom.Parser (parseSourceLine, SourceLine (SourceTextLine, SourceTagLine), SourceTag (FragmentStartTag, FragmentEndTag))
 
 -- Parser tests.
 
