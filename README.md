@@ -2,6 +2,8 @@
 
 **Air Loom** is a reverse literate programming tool: it takes code and documentation and weaves them together. It is both language-agnostic and markup language-agnostic.
 
+## Example
+
 ## Conceptual Overview
 
 Traditionally, there are two approaches to literate programming:
@@ -12,6 +14,18 @@ Traditionally, there are two approaches to literate programming:
 With Air Loom, you write your code in source files, retaining all the benefits of using IDEs, and use comment directives to define named chunks of code called _fragments_. Then, in your documentation, you use directives to include fragments. Air Loom then lifts the fragments out of the code and weaves them into the documentation. Code and documentation are entirely separated.
 
 ## Usage
+
+The `lift` command extracts fragments from a set of files into a fragments file:
+
+```bash
+airloom lift lib.c hello.c test.c -o fragments.json
+```
+
+The `weave` command takes a number of documentation files and a fragments file, it weaves the fragments into the documentation and concatenates them together:
+
+```bash
+airloom weave intro.md examples.md api.md -f fragments.json -o docs.md
+```
 
 ## Downloading
 
