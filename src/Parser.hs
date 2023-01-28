@@ -1,4 +1,5 @@
-module Parser where
+module Parser (loomStart, fragmentStartLine, fragmentStartTag, fragmentName, nameChar, SourceTag (FragmentStartTag, FragmentEndTag))
+where
 import Text.Parsec (many1, manyTill, (<|>))
 import Text.Parsec.String (Parser)
 import Text.Parsec.Char (string, char, anyChar, alphaNum, oneOf, noneOf, newline)
