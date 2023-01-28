@@ -20,7 +20,7 @@ category:           Text
 extra-source-files: CHANGELOG.md
 
 library
-    exposed-modules:  MyLib
+    exposed-modules:  AirLoom
 
     -- Modules included in this library but not exported.
     -- other-modules:
