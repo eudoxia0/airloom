@@ -36,6 +36,7 @@ library
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
+    , regex-tdfa >=1.3.2
   default-language: Haskell2010
 
 executable airloom-exe
@@ -48,6 +49,7 @@ executable airloom-exe
   build-depends:
       airloom
     , base >=4.7 && <5
+    , regex-tdfa >=1.3.2
   default-language: Haskell2010
 
 test-suite airloom-test
@@ -62,4 +64,5 @@ test-suite airloom-test
       HUnit >=1.6.2.0 && <1.7
     , airloom
     , base >=4.7 && <5
+    , regex-tdfa >=1.3.2
   default-language: Haskell2010
