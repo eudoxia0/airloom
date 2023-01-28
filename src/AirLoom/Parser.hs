@@ -33,13 +33,20 @@ data DocLine = DocTextLine String
 -- or a `SourceTextLine` otherwise.
 parseSourceLine :: String -> SourceLine
 parseSourceLine line =
-  (parseLoomStart line) <|> (SourceTagLine line)
+  fromMaybe (fromMaybe defaultB (g x)) (f x)
 
 -- Try parsing a `loom:start` tag.
 parseLoomStart :: String -> Maybe SourceLine
 parseLoomStart line =
   case line =~ loomStartRegex :: (String, String, String, [String]) of
     (_, _, _, text : []) -> Just $ SourceTagLine $ FragmentStartTag text
+    _                    -> Nothing
+
+-- Try parsing a `loom:end` tag.
+parseLoomEnd :: String -> Maybe SourceLine
+parseLoomEnd line =
+  case line =~ loomEndRegex :: (String, String, String, [String]) of
+    (_, _, _, text : []) -> Just $ SourceTagLine $ FragmentEndTag text
     _                    -> Nothing
 
 -- Matches `loom:start` tags.
