@@ -6,7 +6,9 @@ cabal-version: 1.12
 
 name:           airloom
 version:        0.1.0.0
+synopsis:       A reverse literate programming tool.
 description:    Please see the README on GitHub at <https://github.com/eudoxia0/airloom#readme>
+category:       Text
 homepage:       https://github.com/eudoxia0/airloom#readme
 bug-reports:    https://github.com/eudoxia0/airloom/issues
 author:         Fernando Borretti
@@ -56,6 +58,7 @@ test-suite airloom-test
       test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      airloom
+      HUnit >=1.6.2.0 && <1.7
+    , airloom
     , base >=4.7 && <5
   default-language: Haskell2010
