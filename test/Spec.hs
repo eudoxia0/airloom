@@ -15,7 +15,8 @@ parseSourceLineTest = TestCase (do
   assertEqual "" (SourceTagLine (FragmentStartTag "b")) (parseSourceLine "   loom:start(b)   ")
   assertEqual "" (SourceTagLine (FragmentStartTag "a")) (parseSourceLine "loom:start(a)")
   -- loom:end cases
-  assertEqual "" (SourceTagLine (FragmentEndTag "test")) (parseSourceLine "loom:end(test)"))
+  assertEqual "" (SourceTagLine (FragmentEndTag "c")) (parseSourceLine "loom:end(c)")
+  assertEqual "" (SourceTagLine (FragmentEndTag "d")) (parseSourceLine "    loom:end(d)   "))
   
 
 trivialTest :: Test
