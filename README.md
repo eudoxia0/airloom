@@ -1,4 +1,8 @@
-<img src="airloom.jpg" alt="Logo: a detail of John William Waterhouse's paintinf of the Lady of Shalott, showing a loom." width=250 height=250 />
+<img src="airloom.jpg"
+     alt="Logo: a detail of John William Waterhouse's paintinf of the Lady of Shalott, showing a loom."
+     width=250
+     height=250
+     align="right" />
 
 # Air Loom
 
