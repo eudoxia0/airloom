@@ -1,3 +1,5 @@
+<img src="airloom.jpg" alt="Logo: a detail of John William Waterhouse's paintinf of the Lady of Shalott, showing a loom." width=250 height=250 />
+
 # Air Loom
 
 **Air Loom** is a reverse literate programming tool: it takes code and documentation and weaves them together. It is both language-agnostic and markup language-agnostic.
