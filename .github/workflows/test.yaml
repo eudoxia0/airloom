@@ -10,15 +10,5 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Install Cabal
-        run: sudo apt-get update && sudo apt-get install cabal-install
-
-      - name: cabal update
-        run: cabal update
-
-      - name: cabal build
-        run: cabal build
-
-      - name: cabal test
-        run: cabal test
+      - name: stack
+        uses: freckle/stack-action@v3

@@ -1,8 +1,6 @@
-module Main where
+module Main (main) where
 
-import AirLoom (someFunc)
+import Lib
 
 main :: IO ()
-main = do
-  putStrLn "Hello, Haskell!"
-  someFunc
+main = someFunc
