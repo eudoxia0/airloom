@@ -17,12 +17,17 @@ data DocLine = DocTextLine String
 
 -- Matches `loom:start` tags.
 loomStartRegex :: String
-loomStartRegex = "[^\\\\]loom:start\\(([a-zA-Z0-9,':]+)\\)"
+loomStartRegex = tagRegex "loom:start"
 
 -- Matches `loom:end` tags.
 loomEndRegex :: String
-loomEndRegex = "[^\\\\]loom:start\\(([a-zA-Z0-9,':]+)\\)"
+loomEndRegex = tagRegex "loom:end"
 
 -- Matches `loom:include` tags.
 loomIncludeRegex :: String
-loomIncludeRegex = "[^\\\\]loom:include\\(([a-zA-Z0-9,':]+)\\)"
+loomIncludeRegex = tagRegex "loom:include"
+
+-- Makes a regular expression for matching a tag with the given name.
+tagRegex :: String -> String
+tagRegex s =
+  "[^\\\\]" ++ s ++ "\\(([a-zA-Z0-9,':]+)\\)"
