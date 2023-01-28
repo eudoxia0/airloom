@@ -7,14 +7,22 @@ data SourceTag = FragmentStartTag String
 -- The types of tags we can encounter in documentation files.
 data DocTag = TranscludeTag String
 
--- The type of lines in source files.
+-- The type of lines in source files: either a source line or a tag like
+-- `loom:start` or `loom:end`.
 data SourceLine = SourceTextLine String
                 | SourceTagLine SourceTag
 
--- The type of lines in documentation files.
+-- The type of lines in documentation files: either a text line or a tag like
+-- `loom:include`.
 data DocLine = DocTextLine String
              | DocTagLine DocTag
 
+-- Given a line of text, returns a `SourceTagLine` if there's a `loom:*` tag,
+-- or a `SourceTextLine` otherwise.
+parseSourceLine :: String -> SourceLine
+parseSourceLine line =
+  ""
+  
 -- Matches `loom:start` tags.
 loomStartRegex :: String
 loomStartRegex = tagRegex "loom:start"
