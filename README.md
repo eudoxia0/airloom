@@ -10,6 +10,73 @@
 
 ## Example
 
+Given a `hello.c` file:
+
+```c++
+// loom:start(file)
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+    // loom:start(printf)
+    printf("Hello, World!\n");
+    // loom:end(printf)
+    return EXIT_SUCCESS;
+}
+// loom:end(file)
+```
+
+And `hello.md`:
+
+    # Hello, World in C
+
+    Traditionally, the way to kick the tires on a programming language is to
+    write a program that simply prints "Hello, world!" and exits. In C, the
+    function for printing text is called `printf`, and we use it like this:
+    
+    ```c
+    loom:include(printf)
+    ```
+    
+    The whole program looks like this:
+
+    ```c
+    loom:include(main)
+    ```
+    
+Then the following:
+
+```bash
+$ airloom lift hello.c -o frags.json
+$ airloom weave hello.md -f frags.json -o docs.md
+```
+
+Will produce a file `docs.md` with the following contents:
+
+    # Hello, World in C
+
+    Traditionally, the way to kick the tires on a programming language is to
+    write a program that simply prints "Hello, world!" and exits. In C, the
+    function for printing text is called `printf`, and we use it like this:
+    
+    ```c
+    printf("Hello, World!\n");
+    ```
+    
+    The whole program looks like this:
+
+    ```c
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    int main(void)
+    {
+        printf("Hello, World!\n");
+        return EXIT_SUCCESS;
+    }
+    ```
+    
 ## Conceptual Overview
 
 Traditionally, there are two approaches to literate programming:
