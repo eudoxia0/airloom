@@ -23,3 +23,6 @@ loomStartRegex = "[^\\\\]loom:start\\(([a-zA-Z0-9,':]+)\\)"
 loomEndRegex :: String
 loomEndRegex = "[^\\\\]loom:start\\(([a-zA-Z0-9,':]+)\\)"
 
+-- Matches `loom:include` tags.
+loomIncludeRegex :: String
+loomIncludeRegex = "[^\\\\]loom:include\\(([a-zA-Z0-9,':]+)\\)"
