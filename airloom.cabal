@@ -1,0 +1,54 @@
+cabal-version:      2.4
+name:               airloom
+version:            0.1.0.0
+synopsis:           A reverse literate programming tool.
+
+-- A longer description of the package.
+-- description:
+homepage:           https://github.com/eudoxia0/airloom
+
+-- A URL where users can report bugs.
+-- bug-reports:
+license:            Apache-2.0
+license-file:       LICENSE
+author:             Fernando Borretti
+maintainer:         fernando@borretti.me
+
+-- A copyright notice.
+-- copyright:
+category:           Text
+extra-source-files: CHANGELOG.md
+
+library
+    exposed-modules:  MyLib
+
+    -- Modules included in this library but not exported.
+    -- other-modules:
+
+    -- LANGUAGE extensions used by modules in this package.
+    -- other-extensions:
+    build-depends:    base ^>=4.15.1.0
+    hs-source-dirs:   src
+    default-language: Haskell2010
+
+executable airloom
+    main-is:          Main.hs
+
+    -- Modules included in this executable, other than Main.
+    -- other-modules:
+
+    -- LANGUAGE extensions used by modules in this package.
+    -- other-extensions:
+    build-depends:
+        base ^>=4.15.1.0,
+        airloom
+
+    hs-source-dirs:   app
+    default-language: Haskell2010
+
+test-suite airloom-test
+    default-language: Haskell2010
+    type:             exitcode-stdio-1.0
+    hs-source-dirs:   test
+    main-is:          MyLibTest.hs
+    build-depends:    base ^>=4.15.1.0
