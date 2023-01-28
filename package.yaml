@@ -21,6 +21,7 @@ description:         Please see the README on GitHub at <https://github.com/eudo
 
 dependencies:
 - base >= 4.7 && < 5
+- parsec >= 3.1
 
 ghc-options:
 - -Wall
