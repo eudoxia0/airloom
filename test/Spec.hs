@@ -1,13 +1,14 @@
 module Main (main) where
 import Test.HUnit
-import Text.Parsec (parse)
-import AirLoom.Parser (nameChar)
+import AirLoom.Parser (parseSourceLine, SourceLine (SourceTextLine))
 
-nameCharTest :: Test
-nameCharTest = TestCase (do
-  assertEqual "nameChar" (parse nameChar "" "a") (Right 'a')
-  assertEqual "nameChar" (parse nameChar "" " ") (Right ' ')
-  assertEqual "nameChar" (parse nameChar "" "1") (Right '1'))
+-- Parser tests.
+
+parseSourceLineTest :: Test
+parseSourceLineTest = TestCase (do
+  assertEqual "" (parseSourceLine "") (SourceTextLine "")
+  assertEqual "" (parseSourceLine "abc") (SourceTextLine "abc")
+  assertEqual "" (parseSourceLine "Hello, world!") (SourceTextLine "Hello, world!"))
 
 trivialTest :: Test
 trivialTest = TestCase (assertEqual "1 + 1 = 2" (1 + 1) (2 :: Int))
@@ -15,7 +16,7 @@ trivialTest = TestCase (assertEqual "1 + 1 = 2" (1 + 1) (2 :: Int))
 tests :: Test
 tests = TestList [
     TestLabel "trivial" trivialTest,
-    TestLabel "nameChar" nameCharTest
+    TestLabel "parseSourceLine" parseSourceLineTest
   ]
 
 
