@@ -6,7 +6,6 @@ module AirLoom.Parser (
   parseSourceLine,
   parseLoomStart
 ) where 
-import Data.Maybe (fromMaybe)
 import Text.Regex.TDFA
 
 -- The types of tags we can encounter in source files.
