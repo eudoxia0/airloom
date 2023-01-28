@@ -1,6 +1,6 @@
 module Main (main) where
 import Test.HUnit
-import AirLoom.Parser (parseSourceLine, SourceLine (SourceTextLine, SourceTagLine), SourceTag (FragmentStartTag, FragmentEndTag))
+import AirLoom.Parser (parseSourceLine, SourceLine (SourceTextLine, SourceTagLine), SourceTag (FragmentStartTag, FragmentEndTag), parseLoomStart)
 
 -- Parser tests.
 
@@ -10,8 +10,10 @@ parseSourceLineTest = TestCase (do
   assertEqual "" (SourceTextLine "") (parseSourceLine "")
   assertEqual "" (SourceTextLine "abc") (parseSourceLine "abc")
   assertEqual "" (SourceTextLine "Hello, world!") (parseSourceLine "Hello, world!")
+  assertEqual "" (SourceTextLine " loom:start(broken") (parseSourceLine " loom:start(broken")
   -- loom:start cases
-  assertEqual "" (SourceTagLine (FragmentStartTag ("test"))) (parseSourceLine "loom:start(test)")
+  assertEqual "" (SourceTagLine (FragmentStartTag "b")) (parseSourceLine "   loom:start(b)   ")
+  assertEqual "" (SourceTagLine (FragmentStartTag "a")) (parseSourceLine "loom:start(a)")
   -- loom:end cases
   assertEqual "" (SourceTagLine (FragmentEndTag "test")) (parseSourceLine "loom:end(test)"))
   

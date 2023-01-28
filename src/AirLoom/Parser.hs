@@ -3,7 +3,8 @@ module AirLoom.Parser (
   DocTag (..),
   SourceLine (..),
   DocLine (..),
-  parseSourceLine  
+  parseSourceLine,
+  parseLoomStart
 ) where 
 import Control.Applicative ((<|>))
 import Data.Maybe (fromMaybe)
@@ -34,11 +35,11 @@ data DocLine = DocTextLine String
 -- or a `SourceTextLine` otherwise.
 parseSourceLine :: String -> SourceLine
 parseSourceLine line =
-  fromMaybe src (start <|> end)
-  where
-    src = SourceTextLine line
-    start = parseLoomStart line
-    end = parseLoomEnd line
+  case parseLoomStart line of
+    Just l -> l
+    Nothing -> (case parseLoomEnd line of
+                Just l -> l
+                Nothing -> SourceTextLine line)
 
 -- Try parsing a `loom:start` tag.
 parseLoomStart :: String -> Maybe SourceLine
@@ -69,4 +70,4 @@ loomIncludeRegex = tagRegex "loom:include"
 -- Makes a regular expression for matching a tag with the given name.
 tagRegex :: String -> String
 tagRegex s =
-  "^.*[^\\\\]" ++ s ++ "\\(([a-zA-Z0-9,':]+)\\).*$"
+  "^.*" ++ s ++ "\\(([a-zA-Z0-9,':]+)\\).*$"
