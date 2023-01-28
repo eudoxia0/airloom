@@ -1,4 +1,4 @@
-module Parser (loomStart, fragmentStartLine, fragmentStartTag, fragmentName, nameChar, SourceTag (FragmentStartTag, FragmentEndTag))
+module AirLoom.Parser (loomStart, fragmentStartLine, fragmentStartTag, fragmentName, nameChar, SourceTag (FragmentStartTag, FragmentEndTag))
 where
 import Text.Parsec (many1, manyTill, (<|>))
 import Text.Parsec.String (Parser)

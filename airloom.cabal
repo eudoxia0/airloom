@@ -28,7 +28,7 @@ source-repository head
 library
   exposed-modules:
       AirLoom
-      Parser
+      AirLoom.Parser
   other-modules:
       Paths_airloom
   hs-source-dirs:
