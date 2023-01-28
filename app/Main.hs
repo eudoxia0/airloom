@@ -1,6 +1,6 @@
 module Main (main) where
 
-import Lib
+import AirLoom
 
 main :: IO ()
 main = someFunc

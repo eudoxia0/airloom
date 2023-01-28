@@ -27,7 +27,7 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      AirLoom
       Parser
   other-modules:
       Paths_airloom

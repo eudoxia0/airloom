@@ -1,4 +1,4 @@
-module Lib
+module AirLoom
     ( someFunc
     ) where
 
