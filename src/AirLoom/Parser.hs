@@ -6,6 +6,7 @@ module AirLoom.Parser (
   parseSourceLine  
 ) where 
 import Control.Applicative ((<|>))
+import Data.Maybe (fromMaybe)
 import Text.Regex.TDFA
 
 -- The types of tags we can encounter in source files.
@@ -33,7 +34,11 @@ data DocLine = DocTextLine String
 -- or a `SourceTextLine` otherwise.
 parseSourceLine :: String -> SourceLine
 parseSourceLine line =
-  fromMaybe (fromMaybe defaultB (g x)) (f x)
+  fromMaybe src (start <|> end)
+  where
+    src = SourceTextLine line
+    start = parseLoomStart line
+    end = parseLoomEnd line
 
 -- Try parsing a `loom:start` tag.
 parseLoomStart :: String -> Maybe SourceLine
