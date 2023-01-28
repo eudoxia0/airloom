@@ -6,7 +6,6 @@ module AirLoom.Parser (
   parseSourceLine,
   parseLoomStart
 ) where 
-import Control.Applicative ((<|>))
 import Data.Maybe (fromMaybe)
 import Text.Regex.TDFA
 
