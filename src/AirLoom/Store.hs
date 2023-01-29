@@ -2,6 +2,7 @@ module AirLoom.Store
   ( Store,
     FragmentName,
     FragmentContents,
+    InsertionError (DuplicateFragment)
     empty,
     add,
     get,
@@ -16,14 +17,16 @@ type FragmentContents = String
 
 type Store = Map.HashMap FragmentName FragmentContents
 
+type InsertionError = DuplicateFragment FragmentName
+
 empty :: Store
 empty = Map.empty
 
-add :: Store -> FragmentName -> FragmentContents -> Maybe Store
+add :: Store -> FragmentName -> FragmentContents -> Either InsertionError Store
 add store key value =
   case Map.lookup key store of
-    Just _ -> Nothing
-    Nothing -> Just $ Map.insert key value store
+    Just _ -> Left $ DuplicateFragment key
+    Nothing -> Right $ Map.insert key value store
 
 get :: Store -> FragmentName -> Maybe FragmentContents
 get store key = Map.lookup key store
