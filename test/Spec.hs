@@ -53,7 +53,21 @@ parseHelloWorldTest :: Test
 parseHelloWorldTest =
   TestCase
     ( do
-        let fileContents = "// loom:start(file)\n#include <stdio.h>\n#include <stdlib.h>\n\nint main(void)\n{\n    // loom:start(printf)\n    printf(\"Hello, World!\\n\");\n    // loom:end(printf)\n    return EXIT_SUCCESS;\n}\n// loom:end(file)\n"
+        let fileContents =
+              unlines
+                [ "// loom:start(file)",
+                  "#include <stdio.h>",
+                  "#include <stdlib.h>",
+                  "",
+                  "int main(void)",
+                  "{",
+                  "    // loom:start(printf)",
+                  "    printf(\"Hello, World!\\n\");",
+                  "    // loom:end(printf)",
+                  "    return EXIT_SUCCESS;",
+                  "}",
+                  "// loom:end(file)"
+                ]
         let expected =
               [ SourceTagLine (FragmentStartTag "file"),
                 SourceTextLine "#include <stdio.h>",
