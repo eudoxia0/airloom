@@ -28,6 +28,7 @@ source-repository head
 library
   exposed-modules:
       AirLoom
+      AirLoom.Lift
       AirLoom.Parser
   other-modules:
       Paths_airloom
