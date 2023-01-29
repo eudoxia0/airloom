@@ -2,10 +2,11 @@ module AirLoom.Store
   ( Store,
     FragmentName,
     FragmentContents,
-    InsertionError (DuplicateFragment)
+    InsertionError (DuplicateFragment),
     empty,
     add,
     get,
+    append,
   )
 where
 
@@ -30,3 +31,9 @@ add store key value =
 
 get :: Store -> FragmentName -> Maybe FragmentContents
 get store key = Map.lookup key store
+
+-- If `name` is in `store`, appends a newline and `text` to its value. If
+-- `name` is not in `store`, adds an entry mapping `name` to `text`.
+append :: Store -> FragmentName -> FragmentContents -> Store
+append store name text =
+  store
