@@ -1,11 +1,14 @@
-module AirLoom.Lift (transformSource, TransformError (..)) where
+module AirLoom.Lift (transformSource, TransformError (..), groupFragments) where
 
 import AirLoom.Parser
   ( SourceLine (SourceTagLine, SourceTextLine),
     SourceTag (FragmentEndTag, FragmentStartTag),
   )
-import Data.Maybe (mapMaybe)
 import AirLoom.Store (FragmentName)
+import qualified Data.HashMap.Strict as Map
+import Data.Maybe (mapMaybe)
+
+-- Annotate each source line with the fragments it belongs to.
 
 data TransformError
   = UnexpectedEndTag FragmentName
@@ -51,3 +54,15 @@ discardEmpty :: (TagStack, Maybe String) -> Maybe (TagStack, String)
 discardEmpty (stack, maybeString) = case maybeString of
   Just s -> Just (stack, s)
   Nothing -> Nothing
+
+-- Extract tagged lines into a map.
+
+groupFragments :: [(TagStack, String)] -> Map.HashMap String String
+groupFragments l =
+  foldl processLine Map.empty l
+  where
+    processLine h (stack, line) = foldl processTag h stack
+      where
+        processTag h' name = Map.alter (appendLine line) name h'
+        appendLine line' Nothing = Just line'
+        appendLine line' (Just existing) = Just $ existing ++ "\n" ++ line'
