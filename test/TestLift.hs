@@ -1,7 +1,7 @@
 module TestLift (suite) where
 
 import AirLoom.Lift
-  ( TransformError (UnclosedTags, UnexpectedEndTag, UnmatchedEndTag),
+  ( TransformError (UnclosedTags, UnexpectedEndTag, UnmatchedEndTag, DuplicateFragment),
     groupFragments,
     liftFragments,
     transformSource,
@@ -136,6 +136,22 @@ liftFragmentsTest =
         assertEqual "Stores match" expected result
     )
 
+duplicateFragmentTest :: Test
+duplicateFragmentTest =
+  TestCase
+    ( do
+        let input =
+              [ SourceTagLine (FragmentStartTag "foo"),
+                SourceTextLine "Text",
+                SourceTagLine (FragmentStartTag "foo"),
+                SourceTagLine (FragmentEndTag "foo")
+              ]
+            expected =
+              Left $ DuplicateFragment "foo"
+            result = liftFragments input
+        assertEqual "duplicate fragment" expected result
+    )
+
 suite :: Test
 suite =
   TestList
@@ -144,5 +160,6 @@ suite =
       TestLabel "transformSource with unclosed tag" transformSourceUnclosedTagTest,
       TestLabel "transformSource with unexpected end tag" transformSourceUnexpectedEndTagTest,
       TestLabel "groupFragments" groupFragmentsTest,
-      TestLabel "liftFragments" liftFragmentsTest
+      TestLabel "liftFragments" liftFragmentsTest,
+      TestLabel "Duplicate fragment detection" duplicateFragmentTest
     ]
