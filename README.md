@@ -112,6 +112,26 @@ airloom weave examples.md -f fragments.json -o build/examples.md
 airloom weave api.md      -f fragments.json -o build/api.md
 ```
 
+## Example Makefile Usage
+
+The following is an example of using Air Loom with `make`:
+
+```make
+SRC   := src/*.c
+FRAGS := fragments.json
+DOCS  := intro.md concepts.md frontend.md core.md backend.md api.md
+MAN   := manual.md
+
+$(FRAGS): $(SRC)
+    airloom lift $(SRC) -o $(FRAGS)
+
+$(MAN): $(FRAGS) $(DOCS)
+    airloom weave $(DOCS) -f $(FRAGS) -o $(MAN)
+
+clean:
+    rm $(FRAGS)
+```
+
 ## Downloading
 
 ## Building
