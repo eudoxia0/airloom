@@ -4,6 +4,7 @@ module AirLoom.Parser (
   SourceLine (..),
   DocLine (..),
   parseSourceFile,
+  parseDocFile,
   parseSourceLine,
   parseDocLine
 ) where 
@@ -33,6 +34,10 @@ data DocTag = TranscludeTag String
 -- Parse all of a source file.
 parseSourceFile :: String -> [SourceLine]
 parseSourceFile fileContent = map parseSourceLine (lines fileContent)
+
+-- Parse all of a documentation file.
+parseDocFile :: String -> [DocLine]
+parseDocFile fileContent = map parseDocLine (lines fileContent)
 
 -- Given a line of text, returns a `SourceTagLine` if there's a `loom:*` tag,
 -- or a `SourceTextLine` otherwise.
