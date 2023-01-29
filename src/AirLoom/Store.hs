@@ -19,7 +19,7 @@ type FragmentContents = String
 
 type Store = Map.HashMap FragmentName FragmentContents
 
-type InsertionError = DuplicateFragment FragmentName
+data InsertionError = DuplicateFragment FragmentName
 
 empty :: Store
 empty = Map.empty
