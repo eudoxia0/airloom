@@ -1,18 +1,23 @@
-module AirLoom.FragmentStore where
+module AirLoom.FragmentStore
+  ( Store,
+    empty,
+    add,
+    get,
+  )
+where
 
-import Data.Either (Either (..))
 import qualified Data.HashMap.Strict as Map
 
 type Store = Map.HashMap String String
 
-emptyStore :: Store
-emptyStore = Map.empty
+empty :: Store
+empty = Map.empty
 
-addFragment :: Store -> String -> String -> Either String Store
-addFragment store key value =
+add :: Store -> String -> String -> Either String Store
+add store key value =
   case Map.lookup key store of
     Just _ -> Left "Key already exists in store"
     Nothing -> Right $ Map.insert key value store
 
-lookupFragment :: Store -> String -> Maybe String
-lookupFragment store key = Map.lookup key store
+get :: Store -> String -> Maybe String
+get store key = Map.lookup key store
