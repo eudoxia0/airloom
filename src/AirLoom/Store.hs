@@ -37,7 +37,9 @@ get store key = Map.lookup key store
 -- `name` is not in `store`, adds an entry mapping `name` to `text`.
 append :: Store -> FragmentName -> FragmentContents -> Store
 append store name text =
-  store
+  case Map.lookup name store of
+    Just existing -> Map.insert name (existing ++ "\n" ++ text) store
+    Nothing -> Map.insert name text store
 
 merge :: Store -> Store -> Either InsertionError Store
 merge a b =
