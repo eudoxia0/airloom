@@ -1,4 +1,4 @@
-module AirLoom.Lift (transformSource) where
+module AirLoom.Lift (transformSource, TransformError (..)) where
 
 import AirLoom.Parser
   ( SourceLine (SourceTagLine, SourceTextLine),

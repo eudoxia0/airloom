@@ -1,6 +1,6 @@
 module TestLift (suite) where
 
-import AirLoom.Lift (transformSource)
+import AirLoom.Lift (TransformError (UnclosedTags, UnexpectedEndTag, UnmatchedEndTag), transformSource)
 import AirLoom.Parser
   ( SourceLine (SourceTagLine, SourceTextLine),
     SourceTag (FragmentEndTag, FragmentStartTag),
@@ -39,8 +39,48 @@ transformSourceTest =
         assertEqual "transformSource" expected (transformSource input)
     )
 
+transformSourceUnmatchedEndTagTest :: Test
+transformSourceUnmatchedEndTagTest =
+  TestCase
+    ( do
+        let input =
+              [ SourceTagLine (FragmentStartTag "foo"),
+                SourceTextLine "Test",
+                SourceTagLine (FragmentEndTag "bar")
+              ]
+        let expected = Left (UnmatchedEndTag "foo" "bar")
+        assertEqual "transformSource" expected (transformSource input)
+    )
+
+transformSourceUnclosedTagTest :: Test
+transformSourceUnclosedTagTest =
+  TestCase
+    ( do
+        let input =
+              [ SourceTagLine (FragmentStartTag "foo"),
+                SourceTextLine "Test"
+              ]
+        let expected = Left (UnclosedTags ["foo"])
+        assertEqual "transformSource" expected (transformSource input)
+    )
+
+transformSourceUnexpectedEndTagTest :: Test
+transformSourceUnexpectedEndTagTest =
+  TestCase
+    ( do
+        let input =
+              [ SourceTextLine "Test",
+                SourceTagLine (FragmentEndTag "foo")
+              ]
+        let expected = Left (UnexpectedEndTag "foo")
+        assertEqual "unexpectedEndTag" expected (transformSource input)
+    )
+
 suite :: Test
 suite =
   TestList
-    [ TestLabel "transformSource" transformSourceTest
+    [ TestLabel "Successful transformSource" transformSourceTest,
+      TestLabel "transformSource with unmatched end tag" transformSourceUnmatchedEndTagTest,
+      TestLabel "transformSource with unclosed tag" transformSourceUnclosedTagTest,
+      TestLabel "transformSource with unexpected end tag" transformSourceUnexpectedEndTagTest
     ]
