@@ -1,6 +1,6 @@
 module Main (main) where
 
-import AirLoom.Parser (SourceLine (SourceTagLine, SourceTextLine), SourceTag (FragmentEndTag, FragmentStartTag), parseSourceFile, parseSourceLine)
+import AirLoom.Parser (DocLine (DocTagLine, DocTextLine), DocTag (TranscludeTag), SourceLine (SourceTagLine, SourceTextLine), SourceTag (FragmentEndTag, FragmentStartTag), parseDocFile, parseSourceFile, parseSourceLine)
 import Test.HUnit
 
 -- Parser tests.
@@ -34,6 +34,21 @@ parseSourceFileTest =
         assertEqual "text lines, start and end tags" [SourceTextLine "abc", SourceTagLine (FragmentStartTag "foo"), SourceTextLine "def", SourceTagLine (FragmentEndTag "foo"), SourceTextLine "ghi"] (parseSourceFile "abc\nloom:start(foo)\ndef\nloom:end(foo)\nghi")
     )
 
+parseDocFileTest :: Test
+parseDocFileTest =
+  TestCase
+    ( do
+        -- Doc line cases.
+        assertEqual "Empty file." [] (parseDocFile "")
+        assertEqual "One text line." [DocTextLine "abc"] (parseDocFile "abc")
+        assertEqual "" [DocTextLine "Hello, world!"] (parseDocFile "Hello, world!")
+        assertEqual "" [DocTextLine " loom:include(broken"] (parseDocFile " loom:include(broken")
+        -- loom:include cases
+        assertEqual "" [DocTagLine (TranscludeTag "b")] (parseDocFile "   loom:include(b)   ")
+        assertEqual "" [DocTagLine (TranscludeTag "a")] (parseDocFile "loom:include(a)")
+        assertEqual "" [DocTextLine "abc", DocTagLine (TranscludeTag "a"), DocTextLine "def"] (parseDocFile "abc\nloom:include(a)\ndef")
+    )
+
 trivialTest :: Test
 trivialTest = TestCase (assertEqual "1 + 1 = 2" (1 + 1) (2 :: Int))
 
@@ -42,7 +57,8 @@ tests =
   TestList
     [ TestLabel "trivial" trivialTest,
       TestLabel "parseSourceLine" parseSourceLineTest,
-      TestLabel "parseSourceFile" parseSourceFileTest
+      TestLabel "parseSourceFile" parseSourceFileTest,
+      TestLabel "parseDocFileTest" parseDocFileTest
     ]
 
 main :: IO ()
