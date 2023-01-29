@@ -38,6 +38,7 @@ library
   build-depends:
       base >=4.7 && <5
     , regex-tdfa >=1.3.2
+    , unordered-containers >=0.2.19.1
   default-language: Haskell2010
 
 executable airloom-exe
@@ -51,6 +52,7 @@ executable airloom-exe
       airloom
     , base >=4.7 && <5
     , regex-tdfa >=1.3.2
+    , unordered-containers >=0.2.19.1
   default-language: Haskell2010
 
 test-suite airloom-test
@@ -68,4 +70,5 @@ test-suite airloom-test
     , airloom
     , base >=4.7 && <5
     , regex-tdfa >=1.3.2
+    , unordered-containers >=0.2.19.1
   default-language: Haskell2010
