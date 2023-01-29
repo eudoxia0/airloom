@@ -1,4 +1,4 @@
-module AirLoom.FragmentStore
+module AirLoom.Store
   ( Store,
     FragmentName,
     FragmentContents,

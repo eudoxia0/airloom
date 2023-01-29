@@ -5,14 +5,15 @@ import AirLoom.Parser
     SourceTag (FragmentEndTag, FragmentStartTag),
   )
 import Data.Maybe (mapMaybe)
+import AirLoom.Store (FragmentName)
 
 data TransformError
-  = UnexpectedEndTag String
-  | UnmatchedEndTag String String
-  | UnclosedTags [String]
+  = UnexpectedEndTag FragmentName
+  | UnmatchedEndTag FragmentName FragmentName
+  | UnclosedTags [FragmentName]
   deriving (Eq, Show)
 
-type TagStack = [String]
+type TagStack = [FragmentName]
 
 transformSource :: [SourceLine] -> Either TransformError [(TagStack, String)]
 transformSource ls = do
