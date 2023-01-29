@@ -7,6 +7,7 @@ module AirLoom.Store
     add,
     get,
     append,
+    merge
   )
 where
 
@@ -37,3 +38,7 @@ get store key = Map.lookup key store
 append :: Store -> FragmentName -> FragmentContents -> Store
 append store name text =
   store
+
+merge :: Store -> Store -> Either InsertionError Store
+merge a b =
+  a
