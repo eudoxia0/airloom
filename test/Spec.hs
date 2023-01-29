@@ -49,6 +49,28 @@ parseDocFileTest =
         assertEqual "Multiple lines" [DocTextLine "abc", DocTagLine (TranscludeTag "a"), DocTextLine "def"] (parseDocFile "abc\nloom:include(a)\ndef")
     )
 
+parseHelloWorldTest :: Test
+parseHelloWorldTest =
+  TestCase
+    ( do
+        let fileContents = "// loom:start(file)\n#include <stdio.h>\n#include <stdlib.h>\n\nint main(void)\n{\n    // loom:start(printf)\n    printf(\"Hello, World!\\n\");\n    // loom:end(printf)\n    return EXIT_SUCCESS;\n}\n// loom:end(file)\n"
+        let expected =
+              [ SourceTagLine (FragmentStartTag "file"),
+                SourceTextLine "#include <stdio.h>",
+                SourceTextLine "#include <stdlib.h>",
+                SourceTextLine "",
+                SourceTextLine "int main(void)",
+                SourceTextLine "{",
+                SourceTagLine (FragmentStartTag "printf"),
+                SourceTextLine "    printf(\"Hello, World!\\n\");",
+                SourceTagLine (FragmentEndTag "printf"),
+                SourceTextLine "    return EXIT_SUCCESS;",
+                SourceTextLine "}",
+                SourceTagLine (FragmentEndTag "file")
+              ]
+        assertEqual "Parsing source file" expected (parseSourceFile fileContents)
+    )
+
 trivialTest :: Test
 trivialTest = TestCase (assertEqual "1 + 1 = 2" (1 + 1) (2 :: Int))
 
@@ -58,7 +80,8 @@ tests =
     [ TestLabel "trivial" trivialTest,
       TestLabel "parseSourceLine" parseSourceLineTest,
       TestLabel "parseSourceFile" parseSourceFileTest,
-      TestLabel "parseDocFileTest" parseDocFileTest
+      TestLabel "parseDocFileTest" parseDocFileTest,
+      TestLabel "parseHelloWorldTest" parseHelloWorldTest
     ]
 
 main :: IO ()
