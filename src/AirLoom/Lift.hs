@@ -45,10 +45,10 @@ findFirstDuplicate list =
 findFirstDuplicate' :: [String] -> Set.HashSet String -> Maybe String
 findFirstDuplicate' list seen =
   case list of
-    (elem : rest) ->
-      if Set.member elem seen
-        then Just elem
-        else findFirstDuplicate' rest (Set.insert elem seen)
+    (first : rest) ->
+      if Set.member first seen
+        then Just first
+        else findFirstDuplicate' rest (Set.insert first seen)
     [] -> Nothing
 
 -- Annotate each source line with the fragments it belongs to.
