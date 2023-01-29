@@ -1,30 +1,35 @@
-module AirLoom.Parser (
-  SourceTag (..),
-  DocTag (..),
-  SourceLine (..),
-  DocLine (..),
-  parseSourceFile,
-  parseDocFile,
-  parseSourceLine,
-  parseDocLine
-) where 
+module AirLoom.Parser
+  ( SourceTag (..),
+    DocTag (..),
+    SourceLine (..),
+    DocLine (..),
+    parseSourceFile,
+    parseDocFile,
+    parseSourceLine,
+    parseDocLine,
+  )
+where
+
 import Text.Regex.TDFA
 
 -- The type of lines in source files: either a source line or a tag like
 -- `loom:start` or `loom:end`.
-data SourceLine = SourceTextLine String
-                | SourceTagLine SourceTag
+data SourceLine
+  = SourceTextLine String
+  | SourceTagLine SourceTag
   deriving (Eq, Show)
 
 -- The type of lines in documentation files: either a text line or a tag like
 -- `loom:include`.
-data DocLine = DocTextLine String
-             | DocTagLine DocTag
+data DocLine
+  = DocTextLine String
+  | DocTagLine DocTag
   deriving (Eq, Show)
 
 -- The types of tags we can encounter in source files.
-data SourceTag = FragmentStartTag String
-               | FragmentEndTag String
+data SourceTag
+  = FragmentStartTag String
+  | FragmentEndTag String
   deriving (Eq, Show)
 
 -- The types of tags we can encounter in documentation files.
@@ -45,9 +50,11 @@ parseSourceLine :: String -> SourceLine
 parseSourceLine line =
   case parseLoomStart line of
     Just l -> l
-    Nothing -> (case parseLoomEnd line of
-                Just l -> l
-                Nothing -> SourceTextLine line)
+    Nothing ->
+      ( case parseLoomEnd line of
+          Just l -> l
+          Nothing -> SourceTextLine line
+      )
 
 -- Given a line of text, returns a `DocTagLine` if there's a `loom:*` tag, or a
 -- `DocTextLine` otherwise.
@@ -62,21 +69,21 @@ parseLoomStart :: String -> Maybe SourceLine
 parseLoomStart line =
   case line =~ loomStartRegex :: (String, String, String, [String]) of
     (_, _, _, text : []) -> Just $ SourceTagLine $ FragmentStartTag text
-    _                    -> Nothing
+    _ -> Nothing
 
 -- Try parsing a `loom:end` tag.
 parseLoomEnd :: String -> Maybe SourceLine
 parseLoomEnd line =
   case line =~ loomEndRegex :: (String, String, String, [String]) of
     (_, _, _, text : []) -> Just $ SourceTagLine $ FragmentEndTag text
-    _                    -> Nothing
+    _ -> Nothing
 
 -- Try parsing a `loom:include` tag.
 parseLoomInclude :: String -> Maybe DocLine
 parseLoomInclude line =
   case line =~ loomIncludeRegex :: (String, String, String, [String]) of
     (_, _, _, text : []) -> Just $ DocTagLine $ TranscludeTag text
-    _                    -> Nothing
+    _ -> Nothing
 
 -- Matches `loom:start` tags.
 loomStartRegex :: String
