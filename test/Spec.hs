@@ -135,14 +135,10 @@ parseHelloWorldDocTest =
         assertEqual "Parsing documentation file" expected (parseDocFile fileContents)
     )
 
-trivialTest :: Test
-trivialTest = TestCase (assertEqual "1 + 1 = 2" (1 + 1) (2 :: Int))
-
 tests :: Test
 tests =
   TestList
-    [ TestLabel "trivial" trivialTest,
-      TestLabel "parseSourceLine" parseSourceLineTest,
+    [ TestLabel "parseSourceLine" parseSourceLineTest,
       TestLabel "parseSourceFile" parseSourceFileTest,
       TestLabel "parseDocFileTest" parseDocFileTest,
       TestLabel "parseHelloWorldSourceTest" parseHelloWorldSourceTest,
