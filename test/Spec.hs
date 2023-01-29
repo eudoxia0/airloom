@@ -41,12 +41,12 @@ parseDocFileTest =
         -- Doc line cases.
         assertEqual "Empty file." [] (parseDocFile "")
         assertEqual "One text line." [DocTextLine "abc"] (parseDocFile "abc")
-        assertEqual "" [DocTextLine "Hello, world!"] (parseDocFile "Hello, world!")
-        assertEqual "" [DocTextLine " loom:include(broken"] (parseDocFile " loom:include(broken")
+        assertEqual "Hello, world!" [DocTextLine "Hello, world!"] (parseDocFile "Hello, world!")
+        assertEqual "Broken include." [DocTextLine " loom:include(broken"] (parseDocFile " loom:include(broken")
         -- loom:include cases
-        assertEqual "" [DocTagLine (TranscludeTag "b")] (parseDocFile "   loom:include(b)   ")
-        assertEqual "" [DocTagLine (TranscludeTag "a")] (parseDocFile "loom:include(a)")
-        assertEqual "" [DocTextLine "abc", DocTagLine (TranscludeTag "a"), DocTextLine "def"] (parseDocFile "abc\nloom:include(a)\ndef")
+        assertEqual "loom:include(a) with spaces" [DocTagLine (TranscludeTag "b")] (parseDocFile "   loom:include(b)   ")
+        assertEqual "loom:include(a) without spaces" [DocTagLine (TranscludeTag "a")] (parseDocFile "loom:include(a)")
+        assertEqual "Multiple lines" [DocTextLine "abc", DocTagLine (TranscludeTag "a"), DocTextLine "def"] (parseDocFile "abc\nloom:include(a)\ndef")
     )
 
 trivialTest :: Test
