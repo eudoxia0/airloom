@@ -85,6 +85,48 @@ parseHelloWorldSourceTest =
         assertEqual "Parsing source file" expected (parseSourceFile fileContents)
     )
 
+parseHelloWorldDocTest :: Test
+parseHelloWorldDocTest =
+  TestCase
+    ( do
+        let fileContents =
+              unlines
+                [ "# Hello, World in C",
+                  "",
+                  "Traditionally, the way to kick the tires on a programming language is to",
+                  "write a program that simply prints \"Hello, world!\" and exits. In C, the",
+                  "function for printing text is called `printf`, and we use it like this:",
+                  "",
+                  "```c",
+                  "loom:include(printf)",
+                  "```",
+                  "",
+                  "The whole program looks like this:",
+                  "",
+                  "```c",
+                  "loom:include(file)",
+                  "```"
+                ]
+        let expected =
+              [ DocTextLine "# Hello, World in C",
+                DocTextLine "",
+                DocTextLine "Traditionally, the way to kick the tires on a programming language is to",
+                DocTextLine "write a program that simply prints \"Hello, world!\" and exits. In C, the",
+                DocTextLine "function for printing text is called `printf`, and we use it like this:",
+                DocTextLine "",
+                DocTextLine "```c",
+                DocTagLine (TranscludeTag "printf"),
+                DocTextLine "```",
+                DocTextLine "",
+                DocTextLine "The whole program looks like this:",
+                DocTextLine "",
+                DocTextLine "```c",
+                DocTagLine (TranscludeTag "file"),
+                DocTextLine "```"
+              ]
+        assertEqual "Parsing documentation file" expected (parseDocFile fileContents)
+    )
+
 trivialTest :: Test
 trivialTest = TestCase (assertEqual "1 + 1 = 2" (1 + 1) (2 :: Int))
 
@@ -95,7 +137,8 @@ tests =
       TestLabel "parseSourceLine" parseSourceLineTest,
       TestLabel "parseSourceFile" parseSourceFileTest,
       TestLabel "parseDocFileTest" parseDocFileTest,
-      TestLabel "parseHelloWorldSourceTest" parseHelloWorldSourceTest
+      TestLabel "parseHelloWorldSourceTest" parseHelloWorldSourceTest,
+      TestLabel "parseHelloWorldDocTest" parseHelloWorldDocTest
     ]
 
 main :: IO ()
