@@ -1,5 +1,7 @@
 module AirLoom.FragmentStore
   ( Store,
+    FragmentName,
+    FragmentContents,
     empty,
     add,
     get,
