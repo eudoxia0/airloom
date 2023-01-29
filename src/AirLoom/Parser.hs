@@ -3,6 +3,7 @@ module AirLoom.Parser (
   DocTag (..),
   SourceLine (..),
   DocLine (..),
+  parseSourceFile,
   parseSourceLine,
   parseDocLine
 ) where 
@@ -28,6 +29,10 @@ data SourceTag = FragmentStartTag String
 -- The types of tags we can encounter in documentation files.
 data DocTag = TranscludeTag String
   deriving (Eq, Show)
+
+-- Parse all of a source file.
+parseSourceFile :: String -> [SourceLine]
+parseSourceFile fileContent = map parseSourceLine (lines fileContent)
 
 -- Given a line of text, returns a `SourceTagLine` if there's a `loom:*` tag,
 -- or a `SourceTextLine` otherwise.
