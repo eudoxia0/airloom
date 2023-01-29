@@ -4,7 +4,6 @@ module TestStore (suite) where
 import AirLoom.Store (Store (Store))
 import Data.Aeson (encode, eitherDecode)
 import qualified Data.HashMap.Strict as Map
-import Data.Maybe (fromJust)
 import Test.HUnit
 
 toJsonTest :: Test

@@ -14,10 +14,7 @@ module AirLoom.Store
 where
 
 import Data.Aeson
-import Data.Aeson.Key (fromString)
-import Data.Aeson.KeyMap (fromHashMap)
 import qualified Data.HashMap.Strict as Map
-import qualified Data.Text as T
 import GHC.Generics
 
 type FragmentName = String
