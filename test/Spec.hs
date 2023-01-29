@@ -151,15 +151,3 @@ tests =
 
 main :: IO ()
 main = runTestTTAndExit tests
-
-derp :: [String]
-derp =
-  [ (["file"], "#include <stdio.h>"),
-    (["file"], "#include <stdlib.h>"),
-    (["file"], ""),
-    (["file"], "int main(void)"),
-    (["file"], "{"),
-    (["printf", "file"], "    printf(\"Hello, World!\\n\");"),
-    (["file"], "    return EXIT_SUCCESS;"),
-    (["file"], "}")
-  ]
