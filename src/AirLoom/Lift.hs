@@ -26,10 +26,10 @@ liftFragments lst = do
 -- Check we don't have multiple fragments with the same name within a file.
 
 checkStartTagUniqueness :: [SourceLine] -> Either TransformError [SourceLine]
-checkStartTagUniqueness lines =
-  case findFirstDuplicate (mapMaybe startTag lines) of
+checkStartTagUniqueness lst =
+  case findFirstDuplicate (mapMaybe startTag lst) of
     (Just dup) -> Left $ DuplicateFragment dup
-    Nothing -> Right lines
+    Nothing -> Right lst
 
 startTag :: SourceLine -> Maybe String
 startTag line =
