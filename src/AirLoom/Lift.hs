@@ -16,16 +16,11 @@ data TransformError
 type TagStack = [String]
 
 transformSource :: [SourceLine] -> Either TransformError [(TagStack, String)]
-transformSource lines =
-  case transformLines [] lines of
-    Right (stack, lines) ->
-      case stack of
-        -- Check for leftover names in the stack, this means there are unclosed
-        -- fragments.
-        [] -> Right (mapMaybe discardEmpty lines)
-        unclosed -> Left (UnclosedTags unclosed)
-    -- Propagate the error.
-    Left e -> Left e
+transformSource lines = do
+  (stack, lines) <- transformLines [] lines
+  if null stack
+    then Right (mapMaybe discardEmpty lines)
+    else Left (UnclosedTags stack)
 
 transformLines :: TagStack -> [SourceLine] -> Either TransformError (TagStack, [(TagStack, Maybe String)])
 transformLines stack [] = Right (stack, [])
