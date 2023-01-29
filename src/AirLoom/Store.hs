@@ -7,7 +7,7 @@ module AirLoom.Store
     add,
     get,
     append,
-    merge
+    merge,
   )
 where
 
@@ -41,6 +41,10 @@ append store name text =
     Just existing -> Map.insert name (existing ++ "\n" ++ text) store
     Nothing -> Map.insert name text store
 
+-- Merge two stores. If they have any keys in common, returns an
+-- `InsertionError`.
 merge :: Store -> Store -> Either InsertionError Store
 merge a b =
-  a
+  if Map.intersection a b == Map.empty
+    then Right $ Map.union a b
+    else Left $ DuplicateFragment $ head $ Map.keys $ Map.intersection a b
