@@ -1,10 +1,9 @@
-module AirLoom.Lift where
+module AirLoom.Lift (transformSource) where
 
 import AirLoom.Parser
   ( SourceLine (SourceTagLine, SourceTextLine),
     SourceTag (FragmentEndTag, FragmentStartTag),
   )
-import Control.Monad (foldM)
 import Data.Maybe (mapMaybe)
 
 data TransformError
@@ -16,18 +15,18 @@ data TransformError
 type TagStack = [String]
 
 transformSource :: [SourceLine] -> Either TransformError [(TagStack, String)]
-transformSource lines = do
-  (stack, lines) <- transformLines [] lines
+transformSource ls = do
+  (stack, ls') <- transformLines [] ls
   if null stack
-    then Right (mapMaybe discardEmpty lines)
+    then Right (mapMaybe discardEmpty ls')
     else Left (UnclosedTags stack)
 
 transformLines :: TagStack -> [SourceLine] -> Either TransformError (TagStack, [(TagStack, Maybe String)])
 transformLines stack [] = Right (stack, [])
-transformLines stack (line : lines) = do
+transformLines stack (line : ls) = do
   (newStack, result) <- transformLine stack line
-  (finalStack, rest) <- transformLines newStack lines
-  Right (finalStack, (newStack, result) : rest)
+  (finalStack, ls') <- transformLines newStack ls
+  Right (finalStack, (newStack, result) : ls')
 
 transformLine :: TagStack -> SourceLine -> Either TransformError (TagStack, Maybe String)
 transformLine stack line =
