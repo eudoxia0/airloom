@@ -18,9 +18,9 @@ data TransformError
 -- Entrypoint: from source lines to store.
 
 liftFragments :: [SourceLine] -> Either TransformError Store
-liftFragments lines = do
-  checkStartTagUniqueness lines
-  ann <- transformSource lines
+liftFragments lst = do
+  _ <- checkStartTagUniqueness lst
+  ann <- transformSource lst
   return $ groupFragments ann
 
 -- Check we don't have multiple fragments with the same name within a file.
