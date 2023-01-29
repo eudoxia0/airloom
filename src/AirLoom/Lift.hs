@@ -54,7 +54,7 @@ discardEmpty (stack, maybeString) = case maybeString of
   Just s -> Just (stack, s)
   Nothing -> Nothing
 
--- Extract tagged lines into a map.
+-- Extract tagged lines into a store.
 
 groupFragments :: [(TagStack, String)] -> Store
 groupFragments l =

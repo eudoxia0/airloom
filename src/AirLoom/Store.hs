@@ -10,41 +10,42 @@ module AirLoom.Store
     merge
   )
 where
-
+import Data.Aeson
 import qualified Data.HashMap.Strict as Map
 
 type FragmentName = String
 
 type FragmentContents = String
 
-type Store = Map.HashMap FragmentName FragmentContents
+data Store = Store (Map.HashMap FragmentName FragmentContents)
 
 data InsertionError = DuplicateFragment FragmentName
 
 empty :: Store
-empty = Map.empty
+empty = Store Map.empty
 
 add :: Store -> FragmentName -> FragmentContents -> Either InsertionError Store
-add store key value =
+add (Store store) key value =
   case Map.lookup key store of
     Just _ -> Left $ DuplicateFragment key
-    Nothing -> Right $ Map.insert key value store
+    Nothing -> Right $ Store $ Map.insert key value store
 
 get :: Store -> FragmentName -> Maybe FragmentContents
-get store key = Map.lookup key store
+get (Store store) key = Map.lookup key store
 
 -- If `name` is in `store`, appends a newline and `text` to its value. If
 -- `name` is not in `store`, adds an entry mapping `name` to `text`.
 append :: Store -> FragmentName -> FragmentContents -> Store
-append store name text =
+append (Store store) name text =
   case Map.lookup name store of
-    Just existing -> Map.insert name (existing ++ "\n" ++ text) store
-    Nothing -> Map.insert name text store
+    Just existing -> Store $ Map.insert name (existing ++ "\n" ++ text) store
+    Nothing -> Store $ Map.insert name text store
 
 -- Merge two stores. If they have any keys in common, returns an
 -- `InsertionError`.
 merge :: Store -> Store -> Either InsertionError Store
-merge a b =
+merge (Store a) (Store b) =
   if Map.intersection a b == Map.empty
-    then Right $ Map.union a b
+    then Right $ Store $ Map.union a b
     else Left $ DuplicateFragment $ head $ Map.keys $ Map.intersection a b
+
