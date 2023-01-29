@@ -5,15 +5,45 @@ import AirLoom.Parser
     SourceTag (FragmentEndTag, FragmentStartTag),
   )
 import AirLoom.Store (FragmentName, Store, append, empty)
+import qualified Data.HashSet as Set
 import Data.Maybe (mapMaybe)
-
--- Annotate each source line with the fragments it belongs to.
 
 data TransformError
   = UnexpectedEndTag FragmentName
   | UnmatchedEndTag FragmentName FragmentName
   | UnclosedTags [FragmentName]
+  | DuplicateFragment FragmentName
   deriving (Eq, Show)
+
+-- Check we don't have multiple fragments with the same name within a file.
+
+checkStartTagUniqueness :: [SourceLine] -> Either TransformError [SourceLine]
+checkStartTagUniqueness lines =
+  case findFirstDuplicate (mapMaybe startTag lines) of
+    (Just dup) -> Left $ DuplicateFragment dup
+    Nothing -> Right lines
+
+startTag :: SourceLine -> Maybe String
+startTag line =
+  case line of
+    SourceTagLine (FragmentStartTag name) -> Just name
+    _ ->
+      Nothing
+
+findFirstDuplicate :: [String] -> Maybe String
+findFirstDuplicate list =
+  findFirstDuplicate' list Set.empty
+
+findFirstDuplicate' :: [String] -> Set.HashSet String -> Maybe String
+findFirstDuplicate' list seen =
+  case list of
+    (elem : rest) ->
+      if Set.member elem seen
+        then Just elem
+        else findFirstDuplicate' rest (Set.insert elem seen)
+    [] -> Nothing
+
+-- Annotate each source line with the fragments it belongs to.
 
 type TagStack = [FragmentName]
 
