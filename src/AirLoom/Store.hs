@@ -1,3 +1,5 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module AirLoom.Store
   ( Store (Store),
     FragmentName,
@@ -7,12 +9,16 @@ module AirLoom.Store
     add,
     get,
     append,
-    merge
+    merge,
   )
 where
 
 import Data.Aeson
+import Data.Aeson.Key (fromString)
+import Data.Aeson.KeyMap (fromHashMap)
 import qualified Data.HashMap.Strict as Map
+import qualified Data.Text as T
+import GHC.Generics
 
 type FragmentName = String
 
@@ -50,3 +56,8 @@ merge (Store a) (Store b) =
   if Map.intersection a b == Map.empty
     then Right $ Store $ Map.union a b
     else Left $ DuplicateFragment $ head $ Map.keys $ Map.intersection a b
+
+instance ToJSON Store where
+  toJSON (Store store) =
+    object $ map (\(k, v)-> (fromString k, String $ T.pack v)) $ Map.toList store
+
