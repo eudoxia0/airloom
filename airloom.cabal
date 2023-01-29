@@ -28,6 +28,7 @@ source-repository head
 library
   exposed-modules:
       AirLoom
+      AirLoom.FragmentStore
       AirLoom.Lift
       AirLoom.Parser
   other-modules:
