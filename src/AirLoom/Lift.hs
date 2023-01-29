@@ -4,8 +4,7 @@ import AirLoom.Parser
   ( SourceLine (SourceTagLine, SourceTextLine),
     SourceTag (FragmentEndTag, FragmentStartTag),
   )
-import AirLoom.Store (FragmentName)
-import qualified Data.HashMap.Strict as Map
+import AirLoom.Store (FragmentName, Store, append, empty)
 import Data.Maybe (mapMaybe)
 
 -- Annotate each source line with the fragments it belongs to.
@@ -57,12 +56,10 @@ discardEmpty (stack, maybeString) = case maybeString of
 
 -- Extract tagged lines into a map.
 
-groupFragments :: [(TagStack, String)] -> Map.HashMap String String
+groupFragments :: [(TagStack, String)] -> Store
 groupFragments l =
-  foldl processLine Map.empty l
+  foldl processLine empty l
   where
     processLine h (stack, line) = foldl processTag h stack
       where
-        processTag h' name = Map.alter (appendLine line) name h'
-        appendLine line' Nothing = Just line'
-        appendLine line' (Just existing) = Just $ existing ++ "\n" ++ line'
+        processTag h' name = append h' name line
