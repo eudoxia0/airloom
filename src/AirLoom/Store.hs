@@ -7,7 +7,7 @@ module AirLoom.Store
     add,
     get,
     append,
-    merge,
+    merge
   )
 where
 
