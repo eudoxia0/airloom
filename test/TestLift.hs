@@ -1,10 +1,15 @@
 module TestLift (suite) where
 
-import AirLoom.Lift (TransformError (UnclosedTags, UnexpectedEndTag, UnmatchedEndTag), groupFragments, transformSource)
+import AirLoom.Lift
+  ( TransformError (UnclosedTags, UnexpectedEndTag, UnmatchedEndTag),
+    groupFragments,
+    transformSource,
+  )
 import AirLoom.Parser
   ( SourceLine (SourceTagLine, SourceTextLine),
     SourceTag (FragmentEndTag, FragmentStartTag),
   )
+import AirLoom.Store (Store (Store))
 import qualified Data.HashMap.Strict as Map
 import Test.HUnit
 
@@ -91,13 +96,14 @@ groupFragmentsTest =
                 (["file"], "    return EXIT_SUCCESS;"),
                 (["file"], "}")
               ]
-            expectedOutput =
-              Map.fromList
-                [ ("file", "#include <stdio.h>\n#include <stdlib.h>\n\nint main(void)\n{\n    printf(\"Hello, World!\\n\");\n    return EXIT_SUCCESS;\n}"),
-                  ("printf", "    printf(\"Hello, World!\\n\");")
-                ]
+            expected =
+              Store $
+                Map.fromList
+                  [ ("file", "#include <stdio.h>\n#include <stdlib.h>\n\nint main(void)\n{\n    printf(\"Hello, World!\\n\");\n    return EXIT_SUCCESS;\n}"),
+                    ("printf", "    printf(\"Hello, World!\\n\");")
+                  ]
             result = groupFragments input
-        assertEqual "" expectedOutput result
+        assertEqual "Stores match" expected result
     )
 
 suite :: Test
