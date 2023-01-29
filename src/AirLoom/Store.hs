@@ -25,7 +25,7 @@ type FragmentName = String
 type FragmentContents = String
 
 data Store = Store (Map.HashMap FragmentName FragmentContents)
-  deriving (Eq, Show)
+  deriving (Generic, Eq, Show)
 
 data InsertionError = DuplicateFragment FragmentName
 
@@ -58,6 +58,6 @@ merge (Store a) (Store b) =
     else Left $ DuplicateFragment $ head $ Map.keys $ Map.intersection a b
 
 instance ToJSON Store where
-  toJSON (Store store) =
-    object $ map (\(k, v)-> (fromString k, String $ T.pack v)) $ Map.toList store
+  toEncoding = genericToEncoding defaultOptions
 
+instance FromJSON Store
