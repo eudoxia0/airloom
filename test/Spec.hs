@@ -49,8 +49,8 @@ parseDocFileTest =
         assertEqual "Multiple lines" [DocTextLine "abc", DocTagLine (TranscludeTag "a"), DocTextLine "def"] (parseDocFile "abc\nloom:include(a)\ndef")
     )
 
-parseHelloWorldTest :: Test
-parseHelloWorldTest =
+parseHelloWorldSourceTest :: Test
+parseHelloWorldSourceTest =
   TestCase
     ( do
         let fileContents =
@@ -95,7 +95,7 @@ tests =
       TestLabel "parseSourceLine" parseSourceLineTest,
       TestLabel "parseSourceFile" parseSourceFileTest,
       TestLabel "parseDocFileTest" parseDocFileTest,
-      TestLabel "parseHelloWorldTest" parseHelloWorldTest
+      TestLabel "parseHelloWorldSourceTest" parseHelloWorldSourceTest
     ]
 
 main :: IO ()
