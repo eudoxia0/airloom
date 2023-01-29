@@ -3,7 +3,11 @@
      width=250
      height=250
      align="right" />
-     
+
+>The programmer, like the poet, works only slightly removed from pure thought-stuff. He builds his castles in the air, from air, creating by exertion of the imagination
+>
+>— Fred Brooks, _The Mythical Man-Month_
+
 # Air Loom
 
 **Air Loom** is a reverse literate programming tool: it takes code and documentation and weaves them together. It is both language-agnostic and markup language-agnostic.
