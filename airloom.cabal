@@ -57,6 +57,7 @@ test-suite airloom-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      TestLift
       TestParser
       Paths_airloom
   hs-source-dirs:
