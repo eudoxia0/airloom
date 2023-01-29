@@ -1,5 +1,5 @@
 module AirLoom.Store
-  ( Store,
+  ( Store (Store),
     FragmentName,
     FragmentContents,
     InsertionError (DuplicateFragment),
@@ -19,7 +19,7 @@ type FragmentName = String
 type FragmentContents = String
 
 data Store = Store (Map.HashMap FragmentName FragmentContents)
-  deriving (Eq)
+  deriving (Eq, Show)
 
 data InsertionError = DuplicateFragment FragmentName
 
