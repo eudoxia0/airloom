@@ -3,6 +3,7 @@ module TestLift (suite) where
 import AirLoom.Lift
   ( TransformError (UnclosedTags, UnexpectedEndTag, UnmatchedEndTag),
     groupFragments,
+    liftFragments,
     transformSource,
   )
 import AirLoom.Parser
@@ -106,6 +107,35 @@ groupFragmentsTest =
         assertEqual "Stores match" expected result
     )
 
+liftFragmentsTest :: Test
+liftFragmentsTest =
+  TestCase
+    ( do
+        let input =
+              [ SourceTagLine (FragmentStartTag "file"),
+                SourceTextLine "#include <stdio.h>",
+                SourceTextLine "#include <stdlib.h>",
+                SourceTextLine "",
+                SourceTextLine "int main(void)",
+                SourceTextLine "{",
+                SourceTagLine (FragmentStartTag "printf"),
+                SourceTextLine "    printf(\"Hello, World!\\n\");",
+                SourceTagLine (FragmentEndTag "printf"),
+                SourceTextLine "    return EXIT_SUCCESS;",
+                SourceTextLine "}",
+                SourceTagLine (FragmentEndTag "file")
+              ]
+            expected =
+              Right $
+                Store $
+                  Map.fromList
+                    [ ("file", "#include <stdio.h>\n#include <stdlib.h>\n\nint main(void)\n{\n    printf(\"Hello, World!\\n\");\n    return EXIT_SUCCESS;\n}"),
+                      ("printf", "    printf(\"Hello, World!\\n\");")
+                    ]
+            result = liftFragments input
+        assertEqual "Stores match" expected result
+    )
+
 suite :: Test
 suite =
   TestList
@@ -113,5 +143,6 @@ suite =
       TestLabel "transformSource with unmatched end tag" transformSourceUnmatchedEndTagTest,
       TestLabel "transformSource with unclosed tag" transformSourceUnclosedTagTest,
       TestLabel "transformSource with unexpected end tag" transformSourceUnexpectedEndTagTest,
-      TestLabel "groupFragments" groupFragmentsTest
+      TestLabel "groupFragments" groupFragmentsTest,
+      TestLabel "liftFragments" liftFragmentsTest
     ]
