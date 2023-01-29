@@ -10,6 +10,7 @@ module AirLoom.Store
     merge
   )
 where
+
 import Data.Aeson
 import qualified Data.HashMap.Strict as Map
 
@@ -18,6 +19,7 @@ type FragmentName = String
 type FragmentContents = String
 
 data Store = Store (Map.HashMap FragmentName FragmentContents)
+  deriving (Eq)
 
 data InsertionError = DuplicateFragment FragmentName
 
@@ -48,4 +50,3 @@ merge (Store a) (Store b) =
   if Map.intersection a b == Map.empty
     then Right $ Store $ Map.union a b
     else Left $ DuplicateFragment $ head $ Map.keys $ Map.intersection a b
-
