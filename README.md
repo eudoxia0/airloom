@@ -104,6 +104,14 @@ The `weave` command takes a number of documentation files and a fragments file, 
 airloom weave intro.md examples.md api.md -f fragments.json -o docs.md
 ```
 
+If you don't want to concatenate the output, just process them one file at a time:
+
+```bash
+airloom weave intro.md    -f fragments.json -o build/intro.md
+airloom weave examples.md -f fragments.json -o build/examples.md
+airloom weave api.md      -f fragments.json -o build/api.md
+```
+
 ## Downloading
 
 ## Building
