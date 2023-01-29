@@ -8,16 +8,20 @@ where
 
 import qualified Data.HashMap.Strict as Map
 
-type Store = Map.HashMap String String
+type FragmentName = String
+
+type FragmentContents = String
+
+type Store = Map.HashMap FragmentName FragmentContents
 
 empty :: Store
 empty = Map.empty
 
-add :: Store -> String -> String -> Either String Store
+add :: Store -> FragmentName -> FragmentContents -> Maybe Store
 add store key value =
   case Map.lookup key store of
-    Just _ -> Left "Key already exists in store"
-    Nothing -> Right $ Map.insert key value store
+    Just _ -> Nothing
+    Nothing -> Just $ Map.insert key value store
 
-get :: Store -> String -> Maybe String
+get :: Store -> FragmentName -> Maybe FragmentContents
 get store key = Map.lookup key store
