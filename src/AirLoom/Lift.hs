@@ -1,4 +1,4 @@
-module AirLoom.Lift (transformSource, TransformError (..), groupFragments) where
+module AirLoom.Lift (liftFragments, transformSource, TransformError (..), groupFragments) where
 
 import AirLoom.Parser
   ( SourceLine (SourceTagLine, SourceTextLine),
@@ -14,6 +14,14 @@ data TransformError
   | UnclosedTags [FragmentName]
   | DuplicateFragment FragmentName
   deriving (Eq, Show)
+
+-- Entrypoint: from source lines to store.
+
+liftFragments :: [SourceLine] -> Either TransformError Store
+liftFragments lines = do
+  checkStartTagUniqueness lines
+  ann <- transformSource lines
+  return $ groupFragments ann
 
 -- Check we don't have multiple fragments with the same name within a file.
 
