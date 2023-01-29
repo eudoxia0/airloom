@@ -1,10 +1,11 @@
 module TestLift (suite) where
 
-import AirLoom.Lift (TransformError (UnclosedTags, UnexpectedEndTag, UnmatchedEndTag), transformSource)
+import AirLoom.Lift (TransformError (UnclosedTags, UnexpectedEndTag, UnmatchedEndTag), groupFragments, transformSource)
 import AirLoom.Parser
   ( SourceLine (SourceTagLine, SourceTextLine),
     SourceTag (FragmentEndTag, FragmentStartTag),
   )
+import qualified Data.HashMap.Strict as Map
 import Test.HUnit
 
 transformSourceTest :: Test
@@ -76,11 +77,35 @@ transformSourceUnexpectedEndTagTest =
         assertEqual "unexpectedEndTag" expected (transformSource input)
     )
 
+groupFragmentsTest :: Test
+groupFragmentsTest =
+  TestCase
+    ( do
+        let input =
+              [ (["file"], "#include <stdio.h>"),
+                (["file"], "#include <stdlib.h>"),
+                (["file"], ""),
+                (["file"], "int main(void)"),
+                (["file"], "{"),
+                (["printf", "file"], "    printf(\"Hello, World!\\n\");"),
+                (["file"], "    return EXIT_SUCCESS;"),
+                (["file"], "}")
+              ]
+            expectedOutput =
+              Map.fromList
+                [ ("file", "#include <stdio.h>\n#include <stdlib.h>\n\nint main(void)\n{\n    printf(\"Hello, World!\\n\");\n    return EXIT_SUCCESS;\n}"),
+                  ("printf", "    printf(\"Hello, World!\\n\");")
+                ]
+            result = groupFragments input
+        assertEqual "" expectedOutput result
+    )
+
 suite :: Test
 suite =
   TestList
     [ TestLabel "Successful transformSource" transformSourceTest,
       TestLabel "transformSource with unmatched end tag" transformSourceUnmatchedEndTagTest,
       TestLabel "transformSource with unclosed tag" transformSourceUnclosedTagTest,
-      TestLabel "transformSource with unexpected end tag" transformSourceUnexpectedEndTagTest
+      TestLabel "transformSource with unexpected end tag" transformSourceUnexpectedEndTagTest,
+      TestLabel "groupFragments" groupFragmentsTest
     ]
