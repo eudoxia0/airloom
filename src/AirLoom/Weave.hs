@@ -1,4 +1,4 @@
-module AirLoom.Weave where
+module AirLoom.Weave (WeaveError (..), weave) where
 import AirLoom.Parser
   ( DocLine (DocTextLine, DocTagLine),
     DocTag (TranscludeTag),
