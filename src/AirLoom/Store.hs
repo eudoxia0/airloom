@@ -25,6 +25,7 @@ data Store = Store (Map.HashMap FragmentName FragmentContents)
   deriving (Generic, Eq, Show)
 
 data InsertionError = DuplicateFragment FragmentName
+  deriving (Generic, Eq, Show)
 
 empty :: Store
 empty = Store Map.empty
