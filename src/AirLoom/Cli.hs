@@ -31,6 +31,14 @@ weaveCommand =
     <*> strOption (long "fragments" <> short 'f' <> metavar "FRAGS" <> help "Fragments will be read from this JSON file.")
     <*> strOption (long "output" <> short 'o' <> metavar "OUTPUT" <> help "Output will be written to this file.")
 
+synopsis :: String
+synopsis =
+  "Air Loom - A reverse literate programming tool"
+
+desc :: String
+desc =
+  "Air Loom is a language-agnostic reverse literate programming tool."
+
 entrypoint :: IO ()
 entrypoint = do
   cli <- execParser opts
@@ -41,4 +49,4 @@ entrypoint = do
     opts =
       info
         (cliParser <**> helper)
-        (fullDesc <> progDesc "Air Loom is a language-agnostic reverse literate programming tool." <> header "Air Loom - A reverse literate programming tool")
+        (fullDesc <> progDesc desc <> header synopsis)
