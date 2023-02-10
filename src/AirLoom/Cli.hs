@@ -11,6 +11,8 @@ data Command
   | Weave {weaveFiles :: [String], fragmentsFile :: String, outputFile :: String}
   deriving (Show, Typeable)
 
+-- Commands
+
 cliParser :: Parser Command
 cliParser =
   subparser $ liftC <> weaveC
@@ -38,6 +40,8 @@ synopsis =
 desc :: String
 desc =
   "Air Loom is a language-agnostic reverse literate programming tool."
+
+-- Execution
 
 entrypoint :: IO ()
 entrypoint = do
