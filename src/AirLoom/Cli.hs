@@ -52,5 +52,11 @@ entrypoint = do
 execute :: Command -> IO ()
 execute cmd =
   case cmd of
-    Lift files output -> putStrLn $ "lift " ++ show files ++ " to " ++ output
-    Weave files frag output -> putStrLn $ "weave " ++ show files ++ " with " ++ frag ++ " to " ++ output
+    Lift files output -> execLift files output
+    Weave files frag output -> execWeave files frag output
+
+execLift :: [String] -> String -> IO ()
+execLift files output = putStrLn $ "lift " ++ show files ++ " to " ++ output
+
+execWeave :: [String] -> String -> String -> IO ()
+execWeave files frag output = putStrLn $ "weave " ++ show files ++ " with " ++ frag ++ " to " ++ output
