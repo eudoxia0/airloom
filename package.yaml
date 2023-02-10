@@ -25,6 +25,7 @@ dependencies:
 - unordered-containers >= 0.2.19.1
 - aeson >= 2.0
 - text >= 1.2.5
+- optparse-applicative >= 0.17.0.0
 
 ghc-options:
 - -Wall
