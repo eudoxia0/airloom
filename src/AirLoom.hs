@@ -1,7 +1,9 @@
 module AirLoom
-  ( someFunc,
+  ( main,
   )
 where
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+import AirLoom.Cli (entrypoint)
+
+main :: IO ()
+main = entrypoint

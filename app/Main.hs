@@ -1,6 +1,6 @@
 module Main (main) where
 
-import AirLoom
+import qualified AirLoom
 
 main :: IO ()
-main = someFunc
+main = AirLoom.main
