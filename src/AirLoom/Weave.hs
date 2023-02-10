@@ -1,6 +1,7 @@
 module AirLoom.Weave (WeaveError (..), weave) where
+
 import AirLoom.Parser
-  ( DocLine (DocTextLine, DocTagLine),
+  ( DocLine (DocTagLine, DocTextLine),
     DocTag (TranscludeTag),
   )
 import AirLoom.Store (FragmentName, Store, get)
