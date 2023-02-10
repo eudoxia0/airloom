@@ -1,5 +1,14 @@
 module TestWeave (suite) where
 
+import AirLoom.Parser
+  ( DocLine (DocTagLine, DocTextLine),
+    DocTag (TranscludeTag),
+  )
+import AirLoom.Store (Store (Store))
+import AirLoom.Weave (WeaveError (UnknownFragmentError), weave)
+import qualified Data.HashMap.Strict as Map
+import Test.HUnit
+
 successfulWeaveTest :: Test
 successfulWeaveTest =
   TestCase
