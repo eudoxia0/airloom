@@ -8,6 +8,9 @@ import AirLoom.Store (FragmentName, Store, get)
 data WeaveError = UnknownFragmentError FragmentName
   deriving (Eq, Show)
 
+weave :: [DocLine] -> Store -> Either WeaveError [String]
+weave ls store = traverse (\line -> weaveLine line store) ls
+
 weaveLine :: DocLine -> Store -> Either WeaveError String
 weaveLine (DocTextLine s) _ = Right s
 weaveLine (DocTagLine (TranscludeTag name)) store =
