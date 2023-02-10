@@ -12,17 +12,20 @@ data Command
   deriving (Show, Typeable)
 
 cliParser :: Parser Command
-cliParser = liftParser <|> weaveParser
-  where
-    liftParser =
-      Lift
-        <$> some (strArgument (metavar "FILE"))
-        <*> strOption (long "output" <> short 'o' <> metavar "OUTPUT" <> help "Fragments will be written as JSON to this file.")
-    weaveParser =
-      Weave
-        <$> some (strArgument (metavar "FILE"))
-        <*> strOption (long "fragments" <> short 'f' <> metavar "FRAGS" <> help "Fragments will be read from this JSON file.")
-        <*> strOption (long "output" <> short 'o' <> metavar "OUTPUT" <> help "Output will be written to this file.")
+cliParser = hsubparser (command "lift" (info liftCommand (progDesc "Lift command")) <> command "weave" (info weaveCommand (progDesc "Weave command")))
+
+liftCommand :: Parser Command
+liftCommand =
+  Lift
+    <$> some (strArgument (metavar "FILE"))
+    <*> strOption (long "output" <> short 'o' <> metavar "OUTPUT" <> help "Fragments will be written as JSON to this file.")
+
+weaveCommand :: Parser Command
+weaveCommand =
+  Weave
+    <$> some (strArgument (metavar "FILE"))
+    <*> strOption (long "fragments" <> short 'f' <> metavar "FRAGS" <> help "Fragments will be read from this JSON file.")
+    <*> strOption (long "output" <> short 'o' <> metavar "OUTPUT" <> help "Output will be written to this file.")
 
 entrypoint :: IO ()
 entrypoint = do
