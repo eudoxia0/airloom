@@ -41,12 +41,16 @@ desc =
 
 entrypoint :: IO ()
 entrypoint = do
-  cli <- customExecParser (prefs showHelpOnEmpty) opts
-  case cli of
-    Lift files output -> putStrLn $ "lift " ++ show files ++ " to " ++ output
-    Weave files frag output -> putStrLn $ "weave " ++ show files ++ " with " ++ frag ++ " to " ++ output
+  cmd <- customExecParser (prefs showHelpOnEmpty) opts
+  execute cmd
   where
     opts =
       info
         (cliParser <**> helper)
         (fullDesc <> progDesc desc <> header synopsis)
+
+execute :: Command -> IO ()
+execute cmd =
+    case cmd of
+        Lift files output -> putStrLn $ "lift " ++ show files ++ " to " ++ output
+        Weave files frag output -> putStrLn $ "weave " ++ show files ++ " with " ++ frag ++ " to " ++ output    
