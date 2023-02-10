@@ -13,7 +13,7 @@ data Command
 
 cliParser :: Parser Command
 cliParser =
-  hsubparser $ liftC <> weaveC
+  subparser $ liftC <> weaveC
   where
     liftC = command "lift" (info liftCommand (progDesc "Lift fragments out of source code."))
     weaveC = command "weave" (info weaveCommand (progDesc "Weave fragments and documentation together."))
@@ -41,7 +41,7 @@ desc =
 
 entrypoint :: IO ()
 entrypoint = do
-  cli <- execParser opts
+  cli <- customExecParser (prefs showHelpOnEmpty) opts
   case cli of
     Lift files output -> putStrLn $ "lift " ++ show files ++ " to " ++ output
     Weave files frag output -> putStrLn $ "weave " ++ show files ++ " with " ++ frag ++ " to " ++ output
