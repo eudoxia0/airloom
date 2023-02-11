@@ -5,8 +5,7 @@
 module AirLoom.Cli (entrypoint) where
 
 import AirLoom.Lift (liftFragments)
-import AirLoom.Parser (DocLine, parseDocFile, parseSourceFile)
-import AirLoom.Store (Store)
+import AirLoom.Parser (parseDocFile, parseSourceFile)
 import qualified AirLoom.Store as Store
 import AirLoom.Weave (weave)
 import Control.Monad (foldM)
