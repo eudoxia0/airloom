@@ -150,6 +150,16 @@ $ cd airloom
 $ stack build
 ```
 
+## Future Work
+
+- Warnings
+    - Warn when a file has no fragments.
+    - Warn when there are unused fragments.
+    - Complete mode: every non-blank line must be part of a fragment.
+- Escaping: allow prefixing directives with `\` to skip processing.
+- Transclusion escaping:
+    - When transcluding code into e.g. XML, it would be useful to have an option to escape incompatible characters.
+
 ## License
 
 Copyright (c) 2023 [Fernando Borretti](https://borretti.me/).
