@@ -19,3 +19,6 @@ jobs:
 
       - name: example/weave
         run: stack run -- weave example/hello.md -f example/frags.json -o example/output.md
+
+      - name: example/diff
+        run: diff -q example/output.md example/expected.md
