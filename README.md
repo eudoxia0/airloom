@@ -147,7 +147,8 @@ You need [stack][stack] installed. Then:
 ```bash
 $ git clone https://github.com/eudoxia0/airloom.git
 $ cd airloom
-$ stack build
+$ make
+$ sudo make install
 ```
 
 ## Future Work
