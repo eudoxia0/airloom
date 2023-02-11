@@ -14,11 +14,5 @@ jobs:
       - name: stack
         uses: freckle/stack-action@v3
 
-      - name: example/lift
-        run: stack run -- lift example/hello.c -o example/frags.json
-
-      - name: example/weave
-        run: stack run -- weave example/hello.md -f example/frags.json -o example/output.md
-
-      - name: example/diff
-        run: diff -q example/output.md example/expected.md
+      - name: example/hello-world
+        run: make -C example/hello-world
