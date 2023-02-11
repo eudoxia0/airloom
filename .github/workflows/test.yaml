@@ -16,3 +16,6 @@ jobs:
 
       - name: example/lift
         run: stack run -- lift example/hello.c -o example/frags.json
+
+      - name: example/weave
+        run: stack run -- weave example/hello.md -f example/frags.json -o example/output.md
