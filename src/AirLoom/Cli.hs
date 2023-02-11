@@ -97,7 +97,7 @@ execWeave files frags output = do
       putStrLn $ "Error reading store: " ++ err
       exitWith (ExitFailure (-1))
     Right store' -> do
-      let docLines = intercalate "\n" contents
+      let docLines = intercalate "\n\n" contents
           docs = parseDocFile docLines
           result = weave docs store'
       case result of
