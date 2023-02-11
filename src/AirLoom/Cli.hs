@@ -1,17 +1,21 @@
 {-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 {-# OPTIONS_GHC -Wno-partial-fields #-}
+
 module AirLoom.Cli (entrypoint) where
 
+import AirLoom.Lift (liftFragments)
+import AirLoom.Parser (DocLine, parseDocFile, parseSourceFile)
+import AirLoom.Store (Store)
+import qualified AirLoom.Store as Store
+import AirLoom.Weave (weave)
+import Control.Monad (foldM)
+import Data.Aeson (eitherDecode, encode)
+import qualified Data.ByteString.Lazy.Char8 as BSL
+import Data.Either (partitionEithers)
 import Data.Typeable (Typeable)
 import Options.Applicative
-import Data.Aeson (encode)
-import qualified AirLoom.Store as Store
-import AirLoom.Parser (parseSourceFile)
-import AirLoom.Lift (liftFragments)
-import Data.Either (partitionEithers)
 import System.Exit
-import qualified Data.ByteString.Lazy.Char8 as BSL
-import Control.Monad (foldM)
 
 data Command
   = Lift {liftFiles :: [String], outputFile :: String}
@@ -85,4 +89,19 @@ execLift files output = do
       exitWith (ExitFailure (-1))
 
 execWeave :: [String] -> String -> String -> IO ()
-execWeave files frag output = putStrLn $ "weave " ++ show files ++ " with " ++ frag ++ " to " ++ output
+execWeave files frags output = do
+  contents :: [String] <- mapM readFile files
+  store <- eitherDecode <$> BSL.readFile frags
+  case store of
+    Left err -> do
+      putStrLn $ "Error reading store: " ++ err
+      exitWith (ExitFailure (-1))
+    Right store' -> do
+      let docLines = unlines contents
+          docs = parseDocFile docLines
+          result = weave docs store'
+      case result of
+        Left err -> do
+          putStrLn $ "Weaving failed: " ++ show err
+          exitWith (ExitFailure (-1))
+        Right res -> writeFile output (concat res)
