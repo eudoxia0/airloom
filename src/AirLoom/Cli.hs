@@ -104,4 +104,4 @@ execWeave files frags output = do
         Left err -> do
           putStrLn $ "Weaving failed: " ++ show err
           exitWith (ExitFailure (-1))
-        Right res -> writeFile output (concat res)
+        Right res -> writeFile output (unlines res)
