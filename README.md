@@ -136,8 +136,6 @@ clean:
     rm $(FRAGS)
 ```
 
-## Downloading
-
 ## Building
 
 You need [stack][stack] installed. Then:
