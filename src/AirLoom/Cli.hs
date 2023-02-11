@@ -1,8 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-
+{-# OPTIONS_GHC -Wno-partial-fields #-}
 module AirLoom.Cli (entrypoint) where
 
-import Data.Semigroup ((<>))
 import Data.Typeable (Typeable)
 import Options.Applicative
 import Data.Aeson (encode)
