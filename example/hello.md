@@ -11,5 +11,5 @@ loom:include(printf)
 The whole program looks like this:
 
 ```c
-loom:include(main)
+loom:include(file)
 ```
