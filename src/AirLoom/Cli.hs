@@ -13,6 +13,7 @@ import Data.Aeson (eitherDecode, encode)
 import qualified Data.ByteString.Lazy.Char8 as BSL
 import Data.Either (partitionEithers)
 import Data.Typeable (Typeable)
+import Data.List (intercalate)
 import Options.Applicative
 import System.Exit
 
@@ -96,11 +97,11 @@ execWeave files frags output = do
       putStrLn $ "Error reading store: " ++ err
       exitWith (ExitFailure (-1))
     Right store' -> do
-      let docLines = unlines contents
+      let docLines = intercalate "\n" contents
           docs = parseDocFile docLines
           result = weave docs store'
       case result of
         Left err -> do
           putStrLn $ "Weaving failed: " ++ show err
           exitWith (ExitFailure (-1))
-        Right res -> writeFile output (unlines res)
+        Right res -> writeFile output (intercalate "\n" res)

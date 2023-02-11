@@ -6,6 +6,7 @@ import AirLoom.Parser
   )
 import AirLoom.Store (FragmentName, Store, get)
 import Data.Char (isSpace)
+import Data.List (intercalate)
 
 data WeaveError = UnknownFragmentError FragmentName
   deriving (Eq, Show)
@@ -21,7 +22,7 @@ weaveLine (DocTagLine (TranscludeTag name)) store =
     Nothing -> Left (UnknownFragmentError name)
 
 trimPrefixes :: String -> String
-trimPrefixes s = unlines . map (drop commonIndent) . lines $ s
+trimPrefixes s = (intercalate "\n") . map (drop commonIndent) . lines $ s
   where
     indents = map (length . takeWhile isSpace) . lines $ s
     commonIndent = minimum indents
