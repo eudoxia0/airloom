@@ -4,13 +4,17 @@
      height=250
      align="right" />
 
->The programmer, like the poet, works only slightly removed from pure thought-stuff. He builds his castles in the air, from air, creating by exertion of the imagination
+>The programmer, like the poet, works only slightly removed from pure
+>thought-stuff. He builds his castles in the air, from air, creating by exertion
+>of the imagination
 >
 >— Fred Brooks, _The Mythical Man-Month_
 
 # Air Loom
 
-**Air Loom** is a reverse literate programming tool: it takes code and documentation and weaves them together. It is both language-agnostic and markup language-agnostic.
+**Air Loom** is a reverse literate programming tool: it takes code and
+documentation and weaves them together. It is both language-agnostic and markup
+language-agnostic.
 
 ## Example
 
@@ -89,10 +93,20 @@ int main(void)
 
 Traditionally, there are two approaches to literate programming:
 
-1. You write code inside your documentation, and a program extracts and concatenates the listings into source code. This worked in the 70's, but nowadays, you lose all the benefits of IDEs.
-2. A newer approach is to write the documentation within the code as block comments, then a program strips the comment markers and turns everything that's not a comment into a code block. The problem with this approach is many languages require declarations to appear in a specific order, which is rarely the ideal reading order.
+1. You write code inside your documentation, and a program extracts and
+   concatenates the listings into source code. This worked in the 70's, but
+   nowadays, you lose all the benefits of IDEs.
+2. A newer approach is to write the documentation within the code as block
+   comments, then a program strips the comment markers and turns everything
+   that's not a comment into a code block. The problem with this approach is
+   many languages require declarations to appear in a specific order, which is
+   rarely the ideal reading order.
 
-With Air Loom, you write your code in source files, retaining all the benefits of using IDEs, and use comment directives to define named chunks of code called _fragments_. Then, in your documentation, you use directives to include fragments. Air Loom then lifts the fragments out of the code and weaves them into the documentation. Code and documentation are entirely separated.
+With Air Loom, you write your code in source files, retaining all the benefits
+of using IDEs, and use comment directives to define named chunks of code called
+_fragments_. Then, in your documentation, you use directives to include
+fragments. Air Loom then lifts the fragments out of the code and weaves them
+into the documentation. Code and documentation are entirely separated.
 
 ## Usage
 
@@ -102,13 +116,15 @@ The `lift` command extracts fragments from a set of files into a fragments file:
 airloom lift lib.c hello.c test.c -o fragments.json
 ```
 
-The `weave` command takes a number of documentation files and a fragments file, it weaves the fragments into the documentation and concatenates them together:
+The `weave` command takes a number of documentation files and a fragments file,
+it weaves the fragments into the documentation and concatenates them together:
 
 ```bash
 airloom weave intro.md examples.md api.md -f fragments.json -o docs.md
 ```
 
-If you don't want to concatenate the output, just process them one file at a time:
+If you don't want to concatenate the output, just process them one file at a
+time:
 
 ```bash
 airloom weave intro.md    -f fragments.json -o build/intro.md
@@ -157,7 +173,8 @@ $ sudo make install
     - Complete mode: every non-blank line must be part of a fragment.
 - Escaping: allow prefixing directives with `\` to skip processing.
 - Transclusion escaping:
-    - When transcluding code into e.g. XML, it would be useful to have an option to escape incompatible characters.
+    - When transcluding code into e.g. XML, it would be useful to have an option
+      to escape incompatible characters.
 
 ## License
 
