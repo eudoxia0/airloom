@@ -84,7 +84,7 @@ int main(void)
 }
 ```
 ~~~
-    
+
 ## Conceptual Overview
 
 Traditionally, there are two approaches to literate programming:
