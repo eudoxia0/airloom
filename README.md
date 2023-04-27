@@ -165,6 +165,12 @@ $ make
 $ sudo make install
 ```
 
+## Uses
+
+Projects or articles that use Air Loom.
+
+- [_Dependency Resolution Made Simple_](https://borretti.me/article/dependency-resolution-made-simple) ([Source](https://github.com/eudoxia0/eudoxia0.github.io/tree/2344de581ed95588e19b68769ccbcada985c1a10/assets/content/dependency-resolution-made-simple))
+
 ## Future Work
 
 - Warnings
